@@ -1,6 +1,5 @@
 ## Website Performance Optimization portfolio project
 
-## Website Performance Optimization portfolio project
 
 By using PageSpeed guidelines I optimized images, css, html, and js files to achieve the desired score of 90+.
 
