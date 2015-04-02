@@ -284,24 +284,21 @@ function getNoun(y) {
 
 var adjectives = ["dark", "color", "whimsical", "shiny", "noise", "apocalyptic", "insulting", "praise", "scientific"];  // types of adjectives for pizza titles
 var nouns = ["animals", "everyday", "fantasy", "gross", "horror", "jewelry", "places", "scifi"];                        // types of nouns for pizza titles
-/*
-***created a new variable for math random.
-*/
-var mathRandom = Math.random();
+
 // Generates random numbers for getAdj and getNoun functions and returns a new pizza name
 function generator(adj, noun) {
   var adjectives = getAdj(adj);
   var nouns = getNoun(noun);
-  var randomAdjective = parseInt(mathRandom * adjectives.length);
-  var randomNoun = parseInt(mathRandom * nouns.length);
+  var randomAdjective = parseInt(Math.random() * adjectives.length);
+  var randomNoun = parseInt(Math.random() * nouns.length);
   var name = "The " + adjectives[randomAdjective].capitalize() + " " + nouns[randomNoun].capitalize();
   return name;
 }
 
 // Chooses random adjective and random noun
 function randomName() {
-  var randomNumberAdj = parseInt(mathRandom * adjectives.length);
-  var randomNumberNoun = parseInt(mathRandom * nouns.length);
+  var randomNumberAdj = parseInt(Math.random() * adjectives.length);
+  var randomNumberNoun = parseInt(Math.random() * nouns.length);
   return generator(adjectives[randomNumberAdj], nouns[randomNumberNoun]);
 }
 
@@ -362,14 +359,15 @@ var makeRandomPizza = function() {
 };
 
 // returns a DOM element for each pizza
+
 var pizzaElementGenerator = function(i) {
-  var pizzaContainer,             // contains pizza title, image and list of ingredients
-      pizzaImageContainer,        // contains the pizza image
-      pizzaImage,                 // the pizza image itself
-      pizzaDescriptionContainer,  // contains the pizza title and list of ingredients
-      pizzaName,                  // the pizza name itself
-      ul;                         // the list of ingredients
-	  
+  var pizzaContainer,           
+      pizzaImageContainer,      
+      pizzaImage,               
+      pizzaDescriptionContainer,
+      pizzaName,                
+      ul;                       
+
   pizzaContainer  = document.createElement("div");
   pizzaImageContainer = document.createElement("div");
   pizzaImage = document.createElement("img");
@@ -378,10 +376,10 @@ var pizzaElementGenerator = function(i) {
   pizzaContainer.classList.add("randomPizzaContainer");
   pizzaContainer.style.width = "33.33%";
   pizzaContainer.style.height = "325px";
-  pizzaContainer.id = "pizza" + i;                // gives each pizza element a unique id
+  pizzaContainer.id = "pizza" + i;
   pizzaImageContainer.classList.add("col-md-6");
 
-  pizzaImage.src = "images/pizza-small.png";
+  pizzaImage.src = "images/pizza-small.png";    // Optimized the image
   pizzaImage.classList.add("img-responsive");
   pizzaImageContainer.appendChild(pizzaImage);
   pizzaContainer.appendChild(pizzaImageContainer);
@@ -399,7 +397,7 @@ var pizzaElementGenerator = function(i) {
   pizzaContainer.appendChild(pizzaDescriptionContainer);
 
   return pizzaContainer;
-};
+}
 
 // resizePizzas(size) is called when the slider in the "Our Pizzas" section of the website moves.
 var resizePizzas = function(size) { 
@@ -503,16 +501,15 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
 // Moves the sliding background pizzas based on scroll position
- 
-function updatePositions() {
-  frame++;
-  window.performance.mark("mark_start_frame");
 
- 	var items = document.getElementsByClassName('mover');
-  for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-  }
+var items = document.getElementsByClassName('mover');
+function updatePositions() {
+  	frame++;
+  	window.performance.mark("mark_start_frame");
+ 	var phase = Math.sin(document.body.scrollTop / 1250);
+	for (var i = 0; i < items.length; i++) {
+	    items[i].style.transform = 'translate3d(' + ((i % 8) * 256 + 100 * (phase + (i % 5))) + 'px, 0px, 0px)';
+	  }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
