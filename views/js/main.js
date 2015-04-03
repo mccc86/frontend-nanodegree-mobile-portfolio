@@ -15,7 +15,6 @@ Creator:
 Cameron Pittman, Udacity Course Developer
 cameron *at* udacity *dot* com
 */
-/*** student's comments ***/
 
 // As you may have realized, this website randomly generates pizzas.
 // Here are arrays of all possible pizza ingredients.
@@ -456,7 +455,8 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    /*** pull pizzaContainers selector and length calculations out of the for loop **/
+    // #optimize: pull pizzaContainers selector and length calculations
+    // out of the for loop
     for (var i = 0; i < pizzaContainersLength; i++) {
       pizzaContainers[i].style.width = newwidth;
     }
@@ -503,18 +503,19 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 // Moves the sliding background pizzas based on scroll position
 
-/**** Optimizations: 
-***** initialize latest scroll position to 0 and tick to true ***/
+/* STUDENT NOTE: Optimizations annotated by `#optimize` in comments */
+// #optimize: initialize latest scroll position to 0 and tick to true
 var latestKnownScrollY = 0;
 var ticking = true;
 
-/*** scroll callback, bound to scroll window event listener ***/
+// #optimize: scroll callback, bound to scroll window event listener
 function onScroll() {
   latestKnownScrollY = window.scrollY;
   requestTick();
 }
 
-/**** when scrolls, calls `requestAnimationFrame`, but doesn't initiate another***/
+// #optimize: when scrolls, calls `requestAnimationFrame`,
+// but doesn't initiate another
 function requestTick() {
   if (!ticking) {
     requestAnimationFrame(updatePositions);
@@ -522,18 +523,18 @@ function requestTick() {
   ticking = true;
 }
 
-/***** updates positions of pizzas ****/
+// updates positions of pizzas
 function updatePositions() {
-  /**** reset the tick to capture the next onScroll ****/
+  // #optimize reset the tick to capture the next onScroll
   ticking = false;
   frame++;
   window.performance.mark("mark_start_frame");
-  /*** pull currentScrollY out of for loop and fall back to latest known position ***/
+  // #optimize: pull currentScrollY out of for loop and fall back to latest known position
   var items = document.querySelectorAll('.mover');
   var currentScrollY = latestKnownScrollY / 1250;
   var phase;
   for (var i = 0; i < items.length; i++) {
-    /**** insert currentScrollY variable ***/
+    // #optimize: insert currentScrollY variable
     phase = Math.sin(currentScrollY + (i % 5));
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
@@ -548,24 +549,23 @@ function updatePositions() {
   }
 }
 
-/*** runs on scroll, #optimize: change callback function to `onScroll` ***/
+// runs on scroll, #optimize: change callback function to `onScroll`
 window.addEventListener('scroll', onScroll);
 
-/*** Generates the sliding pizzas when the page loads. ***/
+// Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
   
-/*** calculate number of pizzas base on screen size.***/
   var numOfPizzas = screen.availHeight / cols;
   
   for (var i = 0; i < numOfPizzas; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
-    //elem.style.height = "100px";
-    //elem.style.width = "73.333px";
-    //elem.basicLeft = (i % cols) * s;
+    elem.style.height = "100px";
+    elem.style.width = "73.333px";
+    elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
